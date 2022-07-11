@@ -1,3 +1,3 @@
 # ETL Mini-project
 
-ETL min-project by Group 3.
+ETL mini-project by Group 3.

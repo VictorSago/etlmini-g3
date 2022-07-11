@@ -35,8 +35,8 @@ def save_data(dictionary, path):
     '''A function that takes a Python dict and a filepath 
     and saves the dict as a JSON object in that path'''
     file_path = path + "/data.json"
-    with open(file_path, "w") as f:
-        json.dump(dictionary, f)
+    with open(file_path, "w", encoding="utf-8") as f:
+        json.dump(dictionary, f, ensure_ascii=False, indent=4)
 
 def source_to_file(searchstring):
     d = get_info(searchstring)
