@@ -14,7 +14,8 @@ def get_info(searchstring):
     resp = requests.get(req_url)
     if resp.status_code == 200:
         return json.loads(resp.text)
-    return f"Fail! Response code: {resp.status_code}"
+    fail_dict = {"response": "Fail!", "Status": resp.status_code}
+    return fail_dict
 
 # def save_data2(dictionary, path):
 #     '''A function that takes a Python dict and a filepath 
