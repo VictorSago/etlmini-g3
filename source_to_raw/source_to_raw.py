@@ -10,5 +10,5 @@ BASE_URL = "https://swapi.dev/api/"
 def get_info(section, searchterm):
     req_url = BASE_URL + section + "/" + searchterm
     resp = requests.get(req_url)
-    return resp.json()
+    return json.loads(resp.text)
 
