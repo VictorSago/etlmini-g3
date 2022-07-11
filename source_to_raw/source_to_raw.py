@@ -10,5 +10,7 @@ BASE_URL = "https://swapi.dev/api/"
 def get_info(section, searchterm):
     req_url = BASE_URL + section + "/" + searchterm
     resp = requests.get(req_url)
-    return json.loads(resp.text)
+    if resp.status_code == 200:
+        return json.loads(resp.text)
+    return f"Fail! Response code: {resp.status_code}"
 
