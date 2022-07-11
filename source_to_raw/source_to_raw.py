@@ -7,8 +7,8 @@ import json, pprint
 
 BASE_URL = "https://swapi.dev/api/"
 
-def get_info(section, searchterm):
-    req_url = BASE_URL + section + "/" + searchterm
+def get_info(searchstring):
+    req_url = BASE_URL + searchstring
     resp = requests.get(req_url)
     if resp.status_code == 200:
         return json.loads(resp.text)
