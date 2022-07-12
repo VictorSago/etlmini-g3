@@ -1,16 +1,35 @@
-import os
-import requests
+import os, configparser
 import json, pprint
 
+import requests
 
-#CURR_DIR_PATH = os.path.dirname(os.path.realpath(__file__))
+from datetime import datetime
 
-BASE_URL = "https://swapi.dev/api/"
+CONFIG_NAME = "config.ini"
+CURR_DIR_PATH = os.path.dirname(os.path.realpath(os.path.join(__file__ ,"..")))
 
-def get_info(searchstring):
+print("current dir path:", CURR_DIR_PATH)
+print("Config File:", CURR_DIR_PATH + "/" + CONFIG_NAME)
+
+BASE_URL = "https://api.openweathermap.org/data/2.5/onecall"
+
+config = configparser.ConfigParser()
+config.read(CURR_DIR_PATH + "/" + CONFIG_NAME)
+
+API_KEY = config.get("DEV", "API_KEY")
+latitude = config.get("LOCATION", "Latitude")
+longitude = config.get("LOCATION", "Longitude")
+data_folder = config.get("DATA_FOLDER", "Raw_Data_Name")
+
+
+def create_request_string(lat=latitude, lon=longitude, appid=API_KEY):
+    query_str = f"?lat={lat}&lon={lon}&exclude=minutely,alerts&units=metric&appid={appid}"
+    return BASE_URL + query_str
+
+def get_info(lat, lon):
     '''a function that does a request to a URL and 
     returns the resource as a Python dict'''
-    req_url = BASE_URL + searchstring
+    req_url = create_request_string(lat, lon, API_KEY)
     resp = requests.get(req_url)
     if resp.status_code == 200:
         return json.loads(resp.text)
