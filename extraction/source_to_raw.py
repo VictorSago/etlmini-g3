@@ -1,13 +1,13 @@
 import os, configparser
-import json, pprint
+import json
+#import pprint
+#from datetime import datetime
 
 import requests
 
-from datetime import datetime
-
-CONFIG_NAME = "config.ini"
 CURR_DIR_PATH = os.path.dirname(os.path.realpath(os.path.join(__file__ ,"..")))
 
+CONFIG_NAME = "config.ini"
 config = configparser.ConfigParser()
 config.read(CURR_DIR_PATH + "/" + CONFIG_NAME)
 
@@ -15,7 +15,7 @@ API_KEY = config.get("DEV", "API_KEY")
 BASE_URL = config.get("DEV", "Base_Url")
 LATITUDE = config.get("LOCATION", "Latitude")
 LONGITUDE = config.get("LOCATION", "Longitude")
-DATA_DIR = config.get("DATA_FOLDER", "Raw_Data_Name")
+DATA_DIR = config.get("DATA_FOLDER", "Raw_Data_Loc")
 
 
 def create_request_string(lat, lon, appid=API_KEY):
