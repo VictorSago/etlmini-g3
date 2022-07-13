@@ -28,15 +28,23 @@ def transform_json_data(data):
     temps = []
     pressures = []
     pops = []
+    precip = []
     #precipitations = []
     for hour in data["hourly"]:
         dates.append(str(datetime.utcfromtimestamp(hour["dt"])))
         temps.append(hour["temp"])
         pressures.append(hour["pressure"])
         pops.append(round(hour["pop"] * 100, 1))            # Probabilities of precipitation
+        if "rain" in hour:
+            precip.append(hour["rain"]["1h"])
+        elif "snow" in hour:
+            precip.append(hour["snow"]["1h"])
+        else:
+            precip.append(0)
     #print(type(raw_data["hourly"]))
     result = {"date" : dates, "temperature": temps, "air_pressure": pressures}
     result["probablities_of_precipitation"] = pops
+    result["precipitation"] = precip
     return result
 
 def save_to_file(filepath, data):
