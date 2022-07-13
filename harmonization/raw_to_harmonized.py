@@ -31,7 +31,7 @@ def transform_json_data(data):
     precip = []
     #precipitations = []
     for hour in data["hourly"]:
-        dates.append(str(datetime.utcfromtimestamp(hour["dt"])))
+        dates.append(datetime.utcfromtimestamp(hour["dt"]).strftime('%Y-%m-%dT%H:%M:%S%z'))
         temps.append(hour["temp"])
         pressures.append(hour["pressure"])
         pops.append(round(hour["pop"] * 100, 1))            # Probabilities of precipitation
