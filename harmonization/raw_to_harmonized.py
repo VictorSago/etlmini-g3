@@ -16,8 +16,8 @@ config.read(CURR_DIR_PATH + "/" + CONFIG_NAME)
 READ_DATA_DIR = config.get("DATA_FOLDER", "Raw_Data_Loc")
 WRITE_DATA_DIR = config.get("DATA_FOLDER", "Harmonized_Data_Loc")
 
-def read_data(path):
-    file_path = path + "/data.json"
+def read_data(filepath):
+    file_path = filepath + "/data.json"
     with open(file_path, "r") as f:
         raw_data = json.load(f)
     #print(type(raw_data))
@@ -30,7 +30,7 @@ def transform_json_data(data):
     pops = []
     #precipitations = []
     for hour in data["hourly"]:
-        dates.append(datetime.utcfromtimestamp(hour["dt"]))
+        dates.append(str(datetime.utcfromtimestamp(hour["dt"])))
         temps.append(hour["temp"])
         pressures.append(hour["pressure"])
         pops.append(round(hour["pop"] * 100, 1))            # Probabilities of precipitation
@@ -40,7 +40,11 @@ def transform_json_data(data):
     return result
 
 def save_to_file(filepath, data):
-    pprint.pprint(data)
+    #pprint.pprint(data)
+    file_path = filepath + "/data.json"
+    with open(file_path, "w") as f:
+        json.dump(data, f, indent=4)
+    
 
 def run():
     raw = read_data(CURR_DIR_PATH + "/" + READ_DATA_DIR)
