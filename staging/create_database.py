@@ -1,7 +1,13 @@
-
-# Here we take the cleansed data and transform it to staged
 import pandas as pd
 import os
+
+import sqlite3
+
+conn = sqlite3.connect('staged')
+c = conn.cursor()
+
+c.execute ('date', 'temperature')
+conn.commit()
 
 
 
@@ -207,5 +213,11 @@ data = {'date': [ "2022-07-13 12:00:00",
 }
 
 data_df = pd.DataFrame(data)
-print (data_df)
+df.to_sql('products', conn, if_exists='replace', index = False)
 
+c.execute('''  
+SELECT * FROM staged
+          ''')
+
+for row in c.fetchall():
+    print (row)
