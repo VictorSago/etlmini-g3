@@ -2,7 +2,10 @@
 
 import os, configparser
 import json
-import pprint
+#import pprint
+
+import pandas as pd
+import matplotlib.pyplot as plt
 
 from datetime import datetime
 
@@ -53,8 +56,23 @@ def save_to_file(filepath, data):
     with open(file_path, "w") as f:
         json.dump(data, f, indent=4)
     
+def make_line_plot(data):
+    #plt.plot(data["probablities_of_precipitation"])
+    plt.plot(data["temperature"])
+    plt.plot(data["precipitation"])
+    #plt.plot(data["air_pressure"])
+    plt.title("Weather Plot")
+    plt.xlabel("Hour")
+    plt.ylabel("Temp")
+    plt.show()
+
+
 
 def run():
     raw = read_data(CURR_DIR_PATH + "/" + READ_DATA_DIR)
     harmonized = transform_json_data(raw)
     save_to_file(CURR_DIR_PATH + "/" + WRITE_DATA_DIR, harmonized)
+    
+    file_path = CURR_DIR_PATH + "/" + WRITE_DATA_DIR + "/data.json"
+    plot_data = pd.read_json(file_path)
+    make_line_plot(plot_data)
