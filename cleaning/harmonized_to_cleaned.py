@@ -1,12 +1,11 @@
 # Here we clean the harmonized data
 
-from unicodedata import name
 import pandas as pd
 
 import sqlite3
 
 import os, configparser
-import json
+#import json
 
 
 CURR_DIR_PATH = os.path.dirname(os.path.realpath(os.path.join(__file__ ,"..")))
