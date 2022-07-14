@@ -1,9 +1,12 @@
 
-# Config should be local
-config.ini
-
 # Python virtual environment
 venv/
 
 # Ignore data files
 data/*
+
+# Config should be local
+config.ini
+
+# SQLite databaes are local
+*.db

@@ -42,8 +42,8 @@ def transform_json_data(data):
         else:
             precip.append(0)
     #print(type(raw_data["hourly"]))
-    result = {"date" : dates, "temperature": temps, "air_pressure": pressures}
-    result["probablities_of_precipitation"] = pops
+    result = {"datetime" : dates, "temperature": temps, "air_pressure": pressures}
+    result["probablitiy_of_precipitation"] = pops
     result["precipitation"] = precip
     return result
 
