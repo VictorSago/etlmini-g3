@@ -16,6 +16,8 @@ config = configparser.ConfigParser()
 config.read(CURR_DIR_PATH + "/" + CONFIG_NAME)
 
 READ_DATA_DIR = config.get("DATA_FOLDER", "Harmonized_Data_Loc")
+SCHEMA_NAME = config.get("DBS", "Cleansed_Schema_Name")
+TABLE_NAME = config.get("DBS", "Table_Name")
 
 
 def get_connection(dbfile):
@@ -34,11 +36,11 @@ def read_data(filepath):
     return df
 
 
-def transform_data(df, db_file):
+def transform_data(df):
     #print(df)
     return df
 
-def save_to_db(data, db_schema="cleansed", table_name="weather_data"):
+def save_to_db(data, db_schema, table_name):
     conn = get_connection(db_schema + ".db")
     
     with conn:
@@ -47,5 +49,5 @@ def save_to_db(data, db_schema="cleansed", table_name="weather_data"):
 
 def run():
     data = read_data(READ_DATA_DIR)
-    data = transform_data(data, "cleansed.db")
-    save_to_db(data)
+    data = transform_data(data)
+    save_to_db(data, SCHEMA_NAME, TABLE_NAME)
