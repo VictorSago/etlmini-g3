@@ -28,7 +28,6 @@ def get_connection(dbfile):
     return conn
 
 
-
 def read_data(filepath):
     file_path = filepath + "/data.json"
     df = pd.read_json(file_path)
@@ -39,9 +38,9 @@ def transform_data(df):
     #print(df)
     return df
 
+
 def save_to_db(data, db_schema, table_name):
     conn = get_connection(db_schema + ".db")
-    
     with conn:
         data.to_sql(name=table_name, con=conn, if_exists="replace")
         

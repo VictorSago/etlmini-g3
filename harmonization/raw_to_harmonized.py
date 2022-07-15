@@ -42,9 +42,18 @@ def transform_json_data(data):
         else:
             precip.append(0)
     #print(type(raw_data["hourly"]))
-    result = {"datetime" : dates, "temperature": temps, "air_pressure": pressures}
-    result["probablitiy_of_precipitation"] = pops
-    result["precipitation"] = precip
+    d_len = len(data["hourly"])
+    result = {
+        "geo_lat": [data["lat"]] * d_len, 
+        "geo_lon": [data["lon"]] * d_len, 
+        "location": [data["timezone"]] * d_len,
+        "retrieved": [datetime.utcfromtimestamp(data["current"]["dt"]).strftime('%Y-%m-%dT%H:%M:%S%z')] * d_len,
+        "datetime": dates,
+        "temperature": temps,
+        "air_pressure": pressures,
+        "probablitiy_of_precipitation": pops,
+        "precipitation": precip
+        }
     return result
 
 def save_to_file(filepath, data):
@@ -52,7 +61,7 @@ def save_to_file(filepath, data):
     file_path = filepath + "/data.json"
     with open(file_path, "w") as f:
         json.dump(data, f, indent=4)
-    
+
 
 def run():
     raw = read_data(CURR_DIR_PATH + "/" + READ_DATA_DIR)
