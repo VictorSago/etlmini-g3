@@ -46,7 +46,7 @@ def transform_json_data(data):
     result = {
         "geo_lat": [data["lat"]] * d_len, 
         "geo_lon": [data["lon"]] * d_len, 
-        "location": [data["timezone"]] * d_len,
+        "timezone": [data["timezone"]] * d_len,
         "retrieved": [datetime.utcfromtimestamp(data["current"]["dt"]).strftime('%Y-%m-%dT%H:%M:%S%z')] * d_len,
         "datetime": dates,
         "temperature": temps,

@@ -30,7 +30,7 @@ def get_connection(dbfile):
 def read_data(read_schema, read_table):
     conn = get_connection(read_schema + ".db")
     statement = f"SELECT * FROM {read_table}"
-    df = pd.read_sql(statement, conn, index_col="index", coerce_float=True, parse_dates=['retrieved', 'datetime'])
+    df = pd.read_sql(statement, conn, index_col=None, coerce_float=True, parse_dates=['retrieved', 'datetime'])
     return df
 
 
@@ -41,8 +41,8 @@ def transform_data(df):
 def save_to_db(data, db_schema, table_name):
     conn = get_connection(db_schema + ".db")
     with conn:
-        data.to_sql(name=table_name, con=conn, if_exists="replace")
-        
+        data.to_sql(name=table_name, con=conn, if_exists="append")
+
 
 def run():
     data = read_data(READ_SCHEMA_NAME, READ_TABLE_NAME)
