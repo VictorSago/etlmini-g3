@@ -1,9 +1,7 @@
 # Here we take the cleansed data and transform it to staged
 
 import pandas as pd
-
 import sqlite3
-
 import os, configparser
 #import json
 
@@ -37,7 +35,6 @@ def read_data(read_schema, read_table):
 
 
 def transform_data(df):
-    #print(df)
     return df
 
 
@@ -49,7 +46,6 @@ def save_to_db(data, db_schema, table_name):
 
 def run():
     data = read_data(READ_SCHEMA_NAME, READ_TABLE_NAME)
-    #print(data)
     data = transform_data(data)
-    print(data)
+    #print(data)
     save_to_db(data, WRITE_SCHEMA_NAME, WRITE_TABLE_NAME)
