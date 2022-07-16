@@ -1,9 +1,6 @@
 # Here we clean the harmonized data
-
 import pandas as pd
-
 import sqlite3
-
 import os, configparser
 #import json
 
@@ -42,7 +39,7 @@ def transform_data(df):
 def save_to_db(data, db_schema, table_name):
     conn = get_connection(db_schema + ".db")
     with conn:
-        data.to_sql(name=table_name, con=conn, if_exists="replace")
+        data.to_sql(name=table_name, con=conn, if_exists="replace", index=False)
         
 
 def run():

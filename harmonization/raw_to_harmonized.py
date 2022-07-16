@@ -1,10 +1,8 @@
 # Take the extracted raw data and save it to data/harmonized
-
 import os, configparser
 import json
-import pprint
-
 from datetime import datetime
+#import pprint
 
 
 CURR_DIR_PATH = os.path.dirname(os.path.realpath(os.path.join(__file__ ,"..")))
@@ -44,6 +42,10 @@ def transform_json_data(data):
     #print(type(raw_data["hourly"]))
     d_len = len(data["hourly"])
     result = {
+        "city_name": [data["city"]] * d_len,
+        "country": [data["country"]] * d_len,
+        "city_lat": [data["city_lat"]] * d_len,
+        "city_lon": [data["city_lon"]] * d_len,
         "geo_lat": [data["lat"]] * d_len, 
         "geo_lon": [data["lon"]] * d_len, 
         "timezone": [data["timezone"]] * d_len,
@@ -51,8 +53,8 @@ def transform_json_data(data):
         "datetime": dates,
         "temperature": temps,
         "air_pressure": pressures,
-        "probablitiy_of_precipitation": pops,
-        "precipitation": precip
+        "precipitation": precip,
+        "probablitiy_of_precipitation": pops
         }
     return result
 

@@ -1,5 +1,4 @@
 # Here we take the cleansed data and transform it to staged
-
 import pandas as pd
 import sqlite3
 import os, configparser
@@ -41,7 +40,7 @@ def transform_data(df):
 def save_to_db(data, db_schema, table_name):
     conn = get_connection(db_schema + ".db")
     with conn:
-        data.to_sql(name=table_name, con=conn, if_exists="append")
+        data.to_sql(name=table_name, con=conn, if_exists="append", index=False)
 
 
 def run():
