@@ -8,7 +8,6 @@ def transform_json_data(data):
     pressures = []
     pops = []
     precip = []
-    #precipitations = []
     for hour in data["hourly"]:
         dates.append(datetime.utcfromtimestamp(hour["dt"]).strftime('%Y-%m-%dT%H:%M:%S%z'))
         temps.append(hour["temp"])
@@ -20,7 +19,6 @@ def transform_json_data(data):
             precip.append(hour["snow"]["1h"])
         else:
             precip.append(0)
-    #print(type(raw_data["hourly"]))
     d_len = len(data["hourly"])
     result = {
         "city_name": [data["city"]] * d_len,

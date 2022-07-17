@@ -1,12 +1,10 @@
-import os, configparser
-import json
-import requests
+import os
+import configparser
 
 from weathers import weather_ex as wex
 from weathers import weather_har as har
 from weathers import weather_cln as cln
 from weathers import weather_stg as stg
-#from weathers import weather_db as wdb
 
 
 CURR_DIR_PATH = os.path.dirname(os.path.realpath(os.path.join(__file__, "")))
