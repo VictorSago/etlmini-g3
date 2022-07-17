@@ -2,3 +2,5 @@ requests
 numpy
 pandas
 matplotlib
+sqlalchemy
+psycopg2
