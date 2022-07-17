@@ -1,0 +1,35 @@
+
+At the moment the config.ini file has the following form:
+
+================================
+[DEV]
+API_KEY = <<api_key>>
+
+[URLS]
+Base_Url = https://api.openweathermap.org/data/2.5/onecall
+Weather_Url = https://api.openweathermap.org/data/2.5/forecast
+Reverse_Geo_Url = http://api.openweathermap.org/geo/1.0/reverse
+
+[LOCATION]
+Latitude = 58.4
+Longitude = 15.6
+
+[DATA_FOLDER]
+Raw_Data_Loc = data/raw
+Harmonized_Data_Loc = data/harmonized
+
+[DBS]
+DB_Name = weatherdb
+Cleansed_Schema_Name = cleansed
+Staged_Schema_Name = staged
+Modelled_Schema_Name = modelled
+Table_Name = weather_data
+DB_Port = 5432
+
+[CREDENTIALS]
+DB_User_Name = <<user_name>>
+DB_User_Pass = <<user_password>>
+
+================================
+
+The values for API_KEY, DB_User_Name and DB_User_Pass must be replaced with the correct values.

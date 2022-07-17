@@ -1,26 +1,5 @@
-# Take the extracted raw data and save it to data/harmonized
-import os, configparser
-import json
+from weathers import weather_fio as fio
 from datetime import datetime
-#import pprint
-
-
-CURR_DIR_PATH = os.path.dirname(os.path.realpath(os.path.join(__file__, "..")))
-
-CONFIG_NAME = "config.ini"
-config = configparser.ConfigParser()
-config.read(CURR_DIR_PATH + "/" + CONFIG_NAME)
-
-READ_DATA_DIR = config.get("DATA_FOLDER", "Raw_Data_Loc")
-WRITE_DATA_DIR = config.get("DATA_FOLDER", "Harmonized_Data_Loc")
-
-
-def read_data(filepath):
-    file_path = filepath + "/data.json"
-    with open(file_path, "r") as f:
-        raw_data = json.load(f)
-    #print(type(raw_data))
-    return raw_data
 
 
 def transform_json_data(data):
@@ -48,11 +27,11 @@ def transform_json_data(data):
         "country": [data["country"]] * d_len,
         "city_lat": [data["city_lat"]] * d_len,
         "city_lon": [data["city_lon"]] * d_len,
-        "geo_lat": [data["lat"]] * d_len, 
-        "geo_lon": [data["lon"]] * d_len, 
+        "geo_lat": [data["lat"]] * d_len,
+        "geo_lon": [data["lon"]] * d_len,
         "timezone": [data["timezone"]] * d_len,
         "retrieved": [datetime.utcfromtimestamp(data["current"]["dt"]).strftime('%Y-%m-%dT%H:%M:%S%z')] * d_len,
-        "datetime": dates,
+        "forecast_dt": dates,
         "temperature": temps,
         "air_pressure": pressures,
         "precipitation": precip,
@@ -61,14 +40,7 @@ def transform_json_data(data):
     return result
 
 
-def save_to_file(filepath, data):
-    #pprint.pprint(data)
-    file_path = filepath + "/data.json"
-    with open(file_path, "w") as f:
-        json.dump(data, f, indent=4)
-
-
-def run():
-    raw = read_data(CURR_DIR_PATH + "/" + READ_DATA_DIR)
+def run(read_dir, save_dir):
+    raw = fio.read_json_file(read_dir)
     harmonized = transform_json_data(raw)
-    save_to_file(CURR_DIR_PATH + "/" + WRITE_DATA_DIR, harmonized)
+    fio.save_json_file(harmonized, save_dir)
