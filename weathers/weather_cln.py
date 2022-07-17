@@ -12,5 +12,4 @@ def transform_data(data):
 def run(read_dir, user, pw, host, port, db_name, schema, table):
     data = fio.read_json_file(read_dir)
     df = transform_data(data)
-    #print(df)
     wdb.save_to_db(df, user, pw, host, port, db_name, schema, table, replace=True)

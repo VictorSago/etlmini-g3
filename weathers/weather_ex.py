@@ -1,15 +1,6 @@
-import os, configparser
 import json
 import requests
 from weathers import weather_fio as fio
-
-
-CURR_DIR_PATH = os.path.dirname(os.path.realpath(os.path.join(__file__, "")))
-
-
-# def create_request_string(api_url, lat, lon, appid):
-#     query_str = f"?lat={lat}&lon={lon}&exclude=minutely,alerts&units=metric&appid={appid}"
-#     return api_url + query_str
 
 
 def get_city_from_coords(api_url, lat, lon, api_key):
@@ -48,10 +39,8 @@ def get_weather_from_coords(api_url, lat, lon, api_key):
 def get_info(weather_url, geo_url, lat, lon, api_key):
     """A function that does a request to a URL and
     returns the resource as a Python dict"""
-    # req_url = create_request_string(lat, lon, API_KEY)
     weather_data = get_weather_from_coords(weather_url, lat, lon, api_key)
     location_data = get_city_from_coords(geo_url, lat, lon, api_key)
-    # print(weather_data)
     location_data.update(weather_data)
     return location_data
 
