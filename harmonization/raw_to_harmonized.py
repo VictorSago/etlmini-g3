@@ -5,7 +5,7 @@ from datetime import datetime
 #import pprint
 
 
-CURR_DIR_PATH = os.path.dirname(os.path.realpath(os.path.join(__file__ ,"..")))
+CURR_DIR_PATH = os.path.dirname(os.path.realpath(os.path.join(__file__, "..")))
 
 CONFIG_NAME = "config.ini"
 config = configparser.ConfigParser()
@@ -14,12 +14,14 @@ config.read(CURR_DIR_PATH + "/" + CONFIG_NAME)
 READ_DATA_DIR = config.get("DATA_FOLDER", "Raw_Data_Loc")
 WRITE_DATA_DIR = config.get("DATA_FOLDER", "Harmonized_Data_Loc")
 
+
 def read_data(filepath):
     file_path = filepath + "/data.json"
     with open(file_path, "r") as f:
         raw_data = json.load(f)
     #print(type(raw_data))
     return raw_data
+
 
 def transform_json_data(data):
     dates = []
@@ -54,9 +56,10 @@ def transform_json_data(data):
         "temperature": temps,
         "air_pressure": pressures,
         "precipitation": precip,
-        "probablitiy_of_precipitation": pops
+        "probability_of_precipitation": pops
         }
     return result
+
 
 def save_to_file(filepath, data):
     #pprint.pprint(data)

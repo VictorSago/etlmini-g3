@@ -1,11 +1,11 @@
 import os, configparser
 import json
 import requests
-#import pprint
-#from datetime import datetime
+# import pprint
+# from datetime import datetime
 
 
-CURR_DIR_PATH = os.path.dirname(os.path.realpath(os.path.join(__file__ ,"..")))
+CURR_DIR_PATH = os.path.dirname(os.path.realpath(os.path.join(__file__, "..")))
 
 CONFIG_NAME = "config.ini"
 config = configparser.ConfigParser()
@@ -23,6 +23,7 @@ def create_request_string(lat, lon, appid=API_KEY):
     query_str = f"?lat={lat}&lon={lon}&exclude=minutely,alerts&units=metric&appid={appid}"
     return BASE_URL + query_str
 
+
 def get_city_from_coords(lat, lon, api_key):
     query_par = {
         "lat": lat,
@@ -34,12 +35,12 @@ def get_city_from_coords(lat, lon, api_key):
         fail_dict = {"city_response": "Fail!", "Status": resp.status_code}
         return fail_dict
     geo_pos = json.loads(resp.text)
-    city_data = {"city": geo_pos[0]["name"], 
-                    "country": geo_pos[0]["country"],
-                    "city_lat": geo_pos[0]["lat"],
-                    "city_lon": geo_pos[0]["lon"]}
+    city_data = {"city": geo_pos[0]["name"],
+                 "country": geo_pos[0]["country"],
+                 "city_lat": geo_pos[0]["lat"],
+                 "city_lon": geo_pos[0]["lon"]}
     return city_data
-    
+
 
 def get_weather_from_coords(lat, lon, api_key):
     query_par = {
@@ -55,25 +56,26 @@ def get_weather_from_coords(lat, lon, api_key):
         return fail_dict
     return json.loads(resp.text)
 
+
 def get_info(lat, lon, api_key):
-    '''A function that does a request to a URL and 
-    returns the resource as a Python dict'''
-    #req_url = create_request_string(lat, lon, API_KEY)
+    """A function that does a request to a URL and
+    returns the resource as a Python dict"""
+    # req_url = create_request_string(lat, lon, API_KEY)
     weather_data = get_weather_from_coords(lat, lon, api_key)
     location_data = get_city_from_coords(lat, lon, api_key)
-    #weather_data.update(location_data)
-    #print(weather_data)
+    # print(weather_data)
     location_data.update(weather_data)
     return location_data
-    
+
 
 def save_data(dictionary, path):
-    '''A function that takes a Python dict and a filepath 
-    and saves the dict as a JSON object in that path'''
+    """A function that takes a Python dict and a filepath
+    and saves the dict as a JSON object in that path"""
     file_path = path + "/data.json"
     with open(file_path, "w", encoding="utf-8") as f:
         json.dump(dictionary, f, ensure_ascii=False, indent=4)
 
-def source_to_file(lat=LATITUDE, lon=LONGITUDE, api_key = API_KEY):
+
+def source_to_file(lat=LATITUDE, lon=LONGITUDE, api_key=API_KEY):
     d = get_info(lat, lon, api_key)
     save_data(d, DATA_DIR)
