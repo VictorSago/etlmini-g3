@@ -60,7 +60,7 @@ def save_to_db_sqlite(data, db_schema, table_name):
 def save_to_db(data, db_schema, table_name):
     connection_string = f"postgresql+psycopg2://{DB_USER}:{DB_PASS}@localhost:{DB_PORT}/{DB_NAME}"
     engine = sa.create_engine(connection_string, echo=False)
-    data.to_sql(name=table_name, schema=db_schema, con=engine, if_exists="replace", index=False)
+    data.to_sql(name=table_name, schema=db_schema, con=engine, if_exists="append", index=False)
 
 
 def run():
