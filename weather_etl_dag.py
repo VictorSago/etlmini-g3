@@ -1,12 +1,16 @@
+from airflow import DAG
+from airflow.operators.python import PythonOperator
+
 import os
 import configparser
+from datetime import datetime
 
-from weathers import weather_ex as wex
-from weathers import weather_har as har
-from weathers import weather_cln as cln
-from weathers import weather_stg as stg
+from weather_etl.weathers import weather_ex as wex
+from weather_etl.weathers import weather_har as har
+from weather_etl.weathers import weather_cln as cln
+from weather_etl.weathers import weather_stg as stg
 
-# noinspection DuplicatedCode
+
 CURR_DIR_PATH = os.path.dirname(os.path.realpath(os.path.join(__file__, "")))
 
 CONFIG_NAME = "config.ini"
@@ -30,7 +34,7 @@ DB_USER = config.get("CREDENTIALS", "DB_User_Name")
 DB_PASS = config.get("CREDENTIALS", "DB_User_Pass")
 
 
-def run(lat=LATITUDE, lon=LONGITUDE):
+def _get_weather_data(lat=LATITUDE, lon=LONGITUDE):
     extraction_params = {
         "weather_url": BASE_URL,
         "geo_url": GEO_URL,
@@ -41,8 +45,12 @@ def run(lat=LATITUDE, lon=LONGITUDE):
     }
     wex.source_to_file(**extraction_params)
 
+
+def _harmonize_data():
     har.run(RAW_DATA_DIR, HAR_DATA_DIR)
 
+
+def _cleanse_data():
     cleaning_params = {
         "read_dir": HAR_DATA_DIR,
         "user": DB_USER,
@@ -55,6 +63,8 @@ def run(lat=LATITUDE, lon=LONGITUDE):
     }
     cln.run(**cleaning_params)
 
+
+def _stage_data():
     staging_params = {
         "user": DB_USER,
         "pw": DB_PASS,
@@ -67,3 +77,27 @@ def run(lat=LATITUDE, lon=LONGITUDE):
         "write_table": STAGED_TABLE_NAME
     }
     stg.run(**staging_params)
+
+
+with DAG("weather_etl_dag", start_date=datetime(2022, 7, 1), schedule_interval="@hourly", catchup=False) as dag:
+    source_to_raw = PythonOperator(
+        task_id="get_weather",
+        python_callable=_get_weather_data,
+    )
+
+    raw_to_harmonized = PythonOperator(
+        task_id="harmonize",
+        python_callable=_harmonize_data
+    )
+
+    harmonized_to_cleansed = PythonOperator(
+        task_id="cleanse",
+        python_callable=_cleanse_data
+    )
+
+    cleansed_to_staged = PythonOperator(
+        task_id="stage",
+        python_callable=_stage_data
+    )
+
+    source_to_raw >> raw_to_harmonized >> harmonized_to_cleansed >> cleansed_to_staged
